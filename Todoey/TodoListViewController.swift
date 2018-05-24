@@ -10,7 +10,7 @@ import UIKit
 
 class TodoListViewController: UITableViewController {
 
-    let itemArray = ["Find Mike", "Buy Eggos","Destroy Demogorgon"]
+    var itemArray = ["Find Mike", "Buy Eggos","Destroy Demogorgon"]
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -47,6 +47,43 @@ class TodoListViewController: UITableViewController {
         
     }
     
+    //MARK - Add new items to tableview
     
+    @IBAction func addButtonPressed(_ sender: UIBarButtonItem) {
+        
+        var textField = UITextField()
+        
+        let alert = UIAlertController(title: "Add New Todoy Item", message: "", preferredStyle: .alert)
+        let action = UIAlertAction(title: "Add Item", style: .default) { (action) in
+            //what will happen once the user click the add item button on UIAlert
+            //add added text to tableView
+            //itemArray.append(textField.text ?? "New Item") // This give default value of "new Item' when left blank
+            
+            if textField.text?.isEmpty ?? true {
+                let alert = UIAlertController(title: "Empty textfield", message: "Please fill in text box", preferredStyle: .alert)
+                let reloadField = UIAlertAction(title: "OK", style: .default, handler: { (UIAlertAction) in
+                })
+                alert.addAction(reloadField)
+                self.present(alert, animated: true, completion: nil)
+        
+            } else {
+                self.itemArray.append(textField.text!)
+                self.tableView.reloadData()
+
+            }
+        
+        }
+        
+        alert.addTextField { (alertTextField) in
+            alertTextField.placeholder = "Create new item"
+            textField = alertTextField
+        }
+        
+        
+        alert.addAction(action)
+        
+        present(alert, animated: true, completion: nil)
+
+    }
 }
 
