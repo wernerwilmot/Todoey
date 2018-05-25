@@ -11,9 +11,15 @@ import UIKit
 class TodoListViewController: UITableViewController {
 
     var itemArray = ["Find Mike", "Buy Eggos","Destroy Demogorgon"]
+    let defaults = UserDefaults.standard
     
     override func viewDidLoad() {
         super.viewDidLoad()
+    
+        if let items = defaults.array(forKey: "ToDoListArray") as? [String] {
+            itemArray = items
+            
+        }
         // Do any additional setup after loading the view, typically from a nib.
     }
 
@@ -60,7 +66,7 @@ class TodoListViewController: UITableViewController {
             //itemArray.append(textField.text ?? "New Item") // This give default value of "new Item' when left blank
             
             if textField.text?.isEmpty ?? true {
-                let alert = UIAlertController(title: "Empty textfield", message: "Please fill in text box", preferredStyle: .alert)
+                let alert = UIAlertController(title: "Empty field", message: "Please fill in text box", preferredStyle: .alert)
                 let reloadField = UIAlertAction(title: "OK", style: .default, handler: { (UIAlertAction) in
                 })
                 alert.addAction(reloadField)
@@ -68,6 +74,10 @@ class TodoListViewController: UITableViewController {
         
             } else {
                 self.itemArray.append(textField.text!)
+                
+                //save enty in itemArray
+                self.defaults.set(self.itemArray, forKey: "ToDoListArray")
+                
                 self.tableView.reloadData()
 
             }
